@@ -1,6 +1,7 @@
 import React from "react";
 
 const Listitem = ({ item, todoData, setTododata }) => {
+  console.log("Listitem 랜더링", item);
   const btnStyle = {
     color: "#fff",
     float: "right",
@@ -55,4 +56,4 @@ const Listitem = ({ item, todoData, setTododata }) => {
   );
 };
 
-export default Listitem;
+export default React.memo(Listitem);
