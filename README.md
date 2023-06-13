@@ -1,25 +1,32 @@
-# Router Study project
+# 파이어베이스 연동 Todo 웹 개발
 
--React Router 학습을 위한 프로젝트
+◈ Firebase 인증 및 Fire Store를 활용한 React 웹 서비스
 
-## 프로젝트 시나리오
+## 1.프로젝트 정보
 
--   [피그마 주소](http://)
--   [노션주소](htpp://)
+- [피그마 주소](http://)
+- [노션주소](htpp://)
 
-## 프로젝트 참여 인원
+###
 
--   이상윤
+- [Notion](http://)
+- [Vercel](http://)
+- [Figma](http://)
+- 기간 : 2023.06.13 ~ 2023.06.2.
 
-## 프로젝트 일정
+## 2.활용 모듈
 
--   2023-06-12 ~ 2023-06-14
+- React 18
+- React Router 6
+- Emotion
+- SCSS
+- Fontawsome
+- Tailwind
+- axios
+- ArtDesign
+- React Calendar
+- Nivo chart
+- Eslint
+- Prettier
 
-## 활용기술
-
--   React
--   React Router
--   Bootstarp
--   Youtube 라이브러리
--   SCss
--   !!
+## 3.프로젝트 후기
