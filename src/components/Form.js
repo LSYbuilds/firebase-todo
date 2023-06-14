@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Form = ({ todoData, setTododata }) => {
+const Form = ({ todoData, setTodoData }) => {
   console.log("Form 랜더링");
   // 새로운 할일 state 변수
   const [value, setValue] = useState("");
@@ -17,7 +17,9 @@ const Form = ({ todoData, setTododata }) => {
     // A태그의 href를 막아주듯
     // 새로운 todo 객체를 만들어준다 그리고 저장하고 갱신한다.
     // todoData 에 추가
-    setTododata([...todoData, newTodo]);
+    setTodoData([...todoData, newTodo]);
+    // 로컬스토리지 저장
+    localStorage.setItem("fbTodoData", JSON.stringify(todoData));
     setValue("");
   };
 

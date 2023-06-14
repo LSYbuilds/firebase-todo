@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Listitem = ({ item, todoData, setTododata }) => {
+const Listitem = ({ item, todoData, setTodoData }) => {
   // console.log("Listitem 랜더링", item);
   // 편집 상태 설정 state
   const [isEdit, setIsEdit] = useState(false);
@@ -20,7 +20,9 @@ const Listitem = ({ item, todoData, setTododata }) => {
     // 2. 새로운 목록으로 갱신해서 화면 리랜더링
     // 3. 배열의 고차함수 중 filter를 사용
     const newTodoData = todoData.filter(item => item.id !== _id);
-    setTododata(newTodoData);
+    setTodoData(newTodoData);
+    // 로컬스토리지 저장
+    localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
   };
 
   const handleEditClick = () => {
@@ -36,7 +38,10 @@ const Listitem = ({ item, todoData, setTododata }) => {
       }
       return item;
     });
-    setTododata(newTodoData);
+    setTodoData(newTodoData);
+
+    // 로컬스토리지 저장
+    localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
     setIsEdit(false);
   };
   const handleEditChange = e => {
@@ -50,7 +55,9 @@ const Listitem = ({ item, todoData, setTododata }) => {
       }
       return item;
     });
-    setTododata(newTodoData);
+    setTodoData(newTodoData);
+    // 로컬스토리지 저장
+    localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
   };
 
   if (isEdit) {
