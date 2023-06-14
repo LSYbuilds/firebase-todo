@@ -3,7 +3,7 @@ import React from "react";
 const Listitem = ({ item, todoData, setTododata }) => {
   console.log("Listitem 랜더링", item);
   const btnStyle = {
-    color: "#fff",
+    color: "#000",
     float: "right",
     border: "none",
     padding: "5px 9px",
@@ -13,7 +13,6 @@ const Listitem = ({ item, todoData, setTododata }) => {
   const getStyle = _completed => {
     return {
       padding: "10px",
-      borderBottom: "1px dotted #ccc",
       textDecoration: _completed ? "line-through" : "none",
       color: "#fff",
     };
@@ -39,8 +38,8 @@ const Listitem = ({ item, todoData, setTododata }) => {
   };
 
   return (
-    <div>
-      <div style={getStyle(item.completed)} key={item.id}>
+    <div className="flex items-center justify-between w-full mb-2 px-4 -py-1 text-gray-600 bg-gray-100 botder rounded">
+      <div className="items-center" style={getStyle(item.completed)}>
         {/* defaultChecked : 체크박스에 기본체크 상태 설정 */}
         <input
           type="checkbox"
@@ -48,6 +47,8 @@ const Listitem = ({ item, todoData, setTododata }) => {
           onChange={() => handleCompleteChange(item.id)}
         />
         <span className="item-title">{item.title}</span>
+      </div>
+      <div className="items-center">
         <button style={btnStyle} onClick={() => handleClick(item.id)}>
           X
         </button>
@@ -55,5 +56,5 @@ const Listitem = ({ item, todoData, setTododata }) => {
     </div>
   );
 };
-
+// 리랜더링 최적화 적용
 export default React.memo(Listitem);
