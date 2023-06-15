@@ -42,6 +42,8 @@ const Listitem = ({ item, todoData, setTodoData }) => {
 
     // 로컬스토리지 저장
     localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+    // 로컬스토리지 저장
+    // axios delete 호출해서 fbtolist 삭제하기
     setIsEdit(false);
   };
   const handleEditChange = e => {
@@ -57,7 +59,10 @@ const Listitem = ({ item, todoData, setTodoData }) => {
     });
     setTodoData(newTodoData);
     // 로컬스토리지 저장
+    // axios delete 호출해서 fbtolist 삭제하기
     localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+    // 로컬스토리지 저장
+    // axios delete 호출해서 fbtolist 수정하기
   };
 
   if (isEdit) {
@@ -68,10 +73,9 @@ const Listitem = ({ item, todoData, setTodoData }) => {
           <input
             className="w-full px-3 py-2 mr-3 text-grat-500  rounded"
             type="text"
-            value={editTitle}
+            defaultValue={item.title}
             onChange={handleEditChange}
           />
-          {/* <span className="item-title">{item.title}</span> */}
         </div>
         <div className="items-center">
           <button className="px-4 py-2 float-right" onClick={handleCancelClick}>
