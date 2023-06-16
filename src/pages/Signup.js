@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import SignUpDiv from "../style/UserCss";
 import { useNavigate } from "react-router-dom";
+// firebase 연동
+import firebase from "../firebase";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -8,9 +10,32 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [pwConfirm, setPwConfirm] = useState("");
-  const handleSignUp = e => {
+  const handleSignUp = async e => {
     e.preventDefault();
-    // firebase 에 회원가입 하기
+    try {
+      // firebase 에 회원가입 하기
+      let createUser = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, pw);
+      // 회원 가입이 성공시 사용자 이름을 업데이트
+      await createUser.user.updateProfile({
+        displayName: nickname,
+      });
+      // 회원가입 성공시 로그인 창으로 이동
+      navigate("/login");
+      console.log("등록된 정보 : ", createUser.user);
+      // 회원가입시 에러처리
+    } catch (error) {
+      if (error.code == "auth/email-already-in-use") {
+        alert("현재 입력하신 이메일은 사용중인 이메일 입니다.");
+      } else if (error.code == "auth/invalid-email") {
+        alert("현재 입력하신 이메일은 유효하지 않습니다.");
+      } else if (error.code == "auth/operation-not-allowed") {
+        alert("Operation not allowed.");
+      } else if (error.code == "auth/weak-password") {
+        alert("비밀번호의 보안성이 취약합니다.");
+      }
+    }
   };
 
   return (
@@ -35,7 +60,7 @@ const Signup = () => {
             type="email"
             required
             value={email}
-            maxLength={10}
+            maxLength={20}
             minLength={2}
             onChange={e => setEmail(e.target.value)}
             placeholder="이메일을 입력해주세요"
