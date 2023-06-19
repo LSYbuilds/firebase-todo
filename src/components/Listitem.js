@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { patchTitleTodo, patchCompleteTodo, deleteTodo } from "../axios/axios";
 
 const Listitem = ({ item, todoData, setTodoData }) => {
   // console.log("Listitem 랜더링", item);
@@ -15,14 +16,9 @@ const Listitem = ({ item, todoData, setTodoData }) => {
   };
 
   const handleDeleteClick = _id => {
-    // 전달된 ID를 검색해서 목록에서 제거
-    // 1. 전달된 id로 해당하는 목록 찾아서 제외
-    // 2. 새로운 목록으로 갱신해서 화면 리랜더링
-    // 3. 배열의 고차함수 중 filter를 사용
     const newTodoData = todoData.filter(item => item.id !== _id);
     setTodoData(newTodoData);
-    // 로컬스토리지 저장
-    localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+    deleteTodo(_id);
   };
 
   const handleEditClick = () => {
@@ -35,17 +31,17 @@ const Listitem = ({ item, todoData, setTodoData }) => {
     let newTodoData = todoData.map(item => {
       if (item.id === _id) {
         item.title = editTitle;
+        item.completed = false;
       }
       return item;
     });
     setTodoData(newTodoData);
 
-    // 로컬스토리지 저장
-    localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
-    // 로컬스토리지 저장
-    // axios delete 호출해서 fbtolist 삭제하기
+    patchTitleTodo(_id, editTitle);
+    item.completed = false;
     setIsEdit(false);
   };
+
   const handleEditChange = e => {
     setEditTitle(e.target.value);
   };
@@ -53,16 +49,13 @@ const Listitem = ({ item, todoData, setTodoData }) => {
   const handleCompleteChange = _id => {
     let newTodoData = todoData.map(item => {
       if (item.id === _id) {
+        // 전달한 값 보관
         item.completed = !item.completed;
       }
       return item;
     });
     setTodoData(newTodoData);
-    // 로컬스토리지 저장
-    // axios delete 호출해서 fbtolist 삭제하기
-    localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
-    // 로컬스토리지 저장
-    // axios delete 호출해서 fbtolist 수정하기
+    patchCompleteTodo(_id, { ...item });
   };
 
   if (isEdit) {
@@ -71,7 +64,7 @@ const Listitem = ({ item, todoData, setTodoData }) => {
       <div className="flex items-center justify-between w-full mb-2 px-4 -py-1 text-gray-600 bg-gray-100 botder rounded">
         <div className="items-center w-3/5">
           <input
-            className="w-full px-3 py-2 mr-3 text-grat-500  rounded"
+            className="w-full px-3 py-2 mr-3  rounded"
             type="text"
             defaultValue={item.title}
             onChange={handleEditChange}
@@ -99,9 +92,12 @@ const Listitem = ({ item, todoData, setTodoData }) => {
           <input
             type="checkbox"
             defaultChecked={item.completed}
+            value={item.completed}
             onChange={() => handleCompleteChange(item.id)}
           />
-          <span className="item-title ml-3">{item.title}</span>
+          <span className="item-title ml-3 text-primary text-black ">
+            {item.title}
+          </span>
         </div>
         <div className="items-center">
           <button

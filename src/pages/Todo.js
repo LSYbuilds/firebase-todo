@@ -3,31 +3,54 @@ import { useState } from "react";
 import List from "../components/List";
 import Form from "../components/Form";
 import { useNavigate } from "react-router-dom";
+import { axiosInstance, getTodo, deleteAllTodo } from "../axios/axios";
 
 const Todo = ({ fbName, fbEmail, fbUid }) => {
   const navigator = useNavigate();
   // 백엔드반에 DB table 구성에 활용한다.
   // FB , MongoDB 에서는 Collection 구성에 활용한다?!
   console.log(fbName, fbEmail);
-  // 로컬 데이터 state 변수
-  const initTodoData = localStorage.getItem("fbTodoData")
-    ? JSON.parse(localStorage.getItem("fbTodoData"))
-    : [];
+  // JsonServer 데이터 state 변수
+  const initTodoData = [];
   const [todoData, setTodoData] = useState(initTodoData);
 
   const handleRemoveClick = () => {
     setTodoData([]);
+    deleteAllTodo();
     // 로컬스토리지 초기화
-    localStorage.setItem("fbTodoData", JSON.stringify([]));
+    // localStorage.setItem("fbTodoData", JSON.stringify([]));
+  };
+
+  // const RemoveTodo = async(_id) => {
+  //   try {
+  //     const res = await axiosInstance.
+  //   }
+  // }
+
+  const getTodo = async () => {
+    try {
+      const res = await axiosInstance.get("/todos");
+      const result = res.data;
+      // 문제가 무엇인가? true false 가 문자열로 들어옴
+      const todosArr = result.map(item => {
+        if (item.completed === "true") {
+          item.completed = true;
+        } else {
+          item.completed = false;
+        }
+        return item;
+      });
+      setTodoData(todosArr);
+      //
+      // item.completed = JSON.parse(item.completed);
+    } catch (error) {
+      console.log(error);
+    }
   };
   // uid가 없는 경우 로그인으로 바로 보내기
   useEffect(() => {
-    if (!fbUid === "") {
-      navigator("/login");
-    }
+    getTodo(setTodoData);
   }, []);
-
-  useEffect(() => {}, []);
   return (
     <div className="flex justify-center items-start mt-5 w-full">
       <div className="w-4/5 p-6 bg-white rounded-[6px] shadow">
@@ -45,7 +68,12 @@ const Todo = ({ fbName, fbEmail, fbUid }) => {
         {/* 할일 목록 */}
         <List todoData={todoData} setTodoData={setTodoData} />
         {/* 할일 추가 */}
-        <Form todoData={todoData} setTodoData={setTodoData} />
+        <Form
+          todoData={todoData}
+          setTodoData={setTodoData}
+          fbName={fbName}
+          fbEmail={fbEmail}
+        />
       </div>
     </div>
   );

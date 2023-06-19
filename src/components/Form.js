@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { postTodo } from "../axios/axios";
 
-const Form = ({ todoData, setTodoData }) => {
-  console.log("Form 랜더링");
+const Form = ({ todoData, setTodoData, fbName, fbEmail }) => {
+  // console.log("Form 랜더링");
   // 새로운 할일 state 변수
   const [value, setValue] = useState("");
 
@@ -11,13 +12,19 @@ const Form = ({ todoData, setTodoData }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    // 저기에 들어오는 값이 비어있는지 공백인지 뭔지 해야 하는데 
+    // 저기에 들어오는 값이 비어있는지 공백인지 뭔지 해야 하는데
     // 정규표현식이 들어가야 하기 떄문이다.
     if (value === "" || value == " ") {
       alert("내용을 입력하세요!");
     }
     // 형식 즉, 키명을 구조를 지켜줌.
-    const newTodo = { id: Date.now(), title: value, completed: false };
+    const newTodo = {
+      id: Date.now(),
+      title: value,
+      completed: false,
+      author: fbName,
+      email: fbEmail,
+    };
     // 웹 브라우어로 url데이터 전송을 막아야함.
     // A태그의 href를 막아주듯
     // 새로운 todo 객체를 만들어준다 그리고 저장하고 갱신한다.
@@ -26,13 +33,21 @@ const Form = ({ todoData, setTodoData }) => {
     // set 함수에서 setTodoDate 에서 state를 가지고 오기 위해서는
     // set 함수에 인자로
     // 콜백함수를 전달한다.\
-    // setTodoData([...prev, newTodo]);
-    setTodoData(prev => {
-      return [...prev, newTodo];
-    });
+    setTodoData([...todoData, newTodo]);
+    // setTodoData(prev => {
+    //   return [...prev, newTodo];
+    // });
     // 로컬스토리지 저장
-    localStorage.setItem("fbTodoData", JSON.stringify([...todoData, newTodo]));
+    // localStorage.setItem("fbTodoData", JSON.stringify([...todoData, newTodo]));
     // asios poost 호출 dbtodolist 추가하기
+
+    // axiosInstance
+    //   .post("/todos", newTodo)
+    //   .then(res => res.data)
+    //   .then(data => console.log(data))
+    //   .catch(error => console.log(error));
+    // 입력창 초기화
+    postTodo(newTodo);
     setValue("");
   };
 

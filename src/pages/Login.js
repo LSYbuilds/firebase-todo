@@ -1,19 +1,22 @@
 import React, { useState } from "react";
-import { LoginDiv } from "../style/UserCss";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import firebase from "../firebase";
+import { Button, Checkbox, Form, Input, Modal } from "antd";
 
 const Login = ({ setFBEmail, setFBName, setFBUid }) => {
   // Link가 아닌 ,NavLink , useNavigate;
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   // 로그인
-  const handleLogin = async e => {
-    e.preventDefault();
+
+  const onFinish = async values => {
+    // console.log("Success:", values);
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
-      console.log("로그인 성공");
+      await firebase
+        .auth()
+        .signInWithEmailAndPassword(values.Email, values.password);
       // 로그인 된 사용자 정보를 가지고 온다
       const user = firebase.auth().currentUser;
       console.log(user);
@@ -24,78 +27,156 @@ const Login = ({ setFBEmail, setFBName, setFBUid }) => {
       // navigate("/");
     } catch (error) {
       console.log(error.code);
+
       if (error.code === "auth/invalid-email") {
-        alert("올바른 이메일 형식이 아닙니다.");
+        setModalMessage("올바른 이메일 형식이 아닙니다.");
       } else if (error.code === "auth/wrong-password") {
-        alert("올바르지 않은 비밀번호입니다.");
+        setModalMessage("올바르지 않은 비밀번호입니다.");
       } else if (error.code === "auth/user-not-found") {
-        alert("가입되지 않은 사용자 입니다.");
+        setModalMessage("가입되지 않은 사용자 입니다.");
       } else if (error.code === "auth/missing-email") {
-        alert("이메일이 안맞다");
+        setModalMessage("이메일이 맞지않습니다.");
       } else {
-        alert("로그인이 실패하였습니다.");
+        setModalMessage("로그인이 실패하였습니다.");
       }
+      showModal();
     }
-    // Firebase 로그인 시도
+  };
+
+  const onFinishFailed = errorInfo => {
+    console.log("Failed:", errorInfo);
+  };
+
+  // Modal 기능
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const tailLayout = {
+    wrapperCol: { offset: 8, span: 16 },
   };
 
   return (
     <div className="p-6 mt-5 shadow rounded-md bg-white flex flex-col">
       <h2>Login</h2>
+      {/* ANT디자인? */}
+
+      {/* AntD Modal */}
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>{modalMessage}</p>
+      </Modal>
+      <Form
+        name="basic"
+        labelCol={{
+          span: 8,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
+        style={{
+          maxWidth: 1280,
+          margin: "0 auto",
+        }}
+        initialValues={{
+          remember: false,
+        }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="off"
+      >
+        <Form.Item
+          label="Email"
+          name="Email"
+          rules={[
+            {
+              type: "email",
+              required: true,
+              message: "Email을 입력하세요",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "비밀번호를 입력하세요",
+              validator: async (_, password) => {
+                if (!password || password.length < 6) {
+                  return Promise.reject(new Error("At least 6 passengers"));
+                }
+              },
+            },
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item
+          name="remember"
+          valuePropName="checked"
+          wrapperCol={{
+            offset: 8,
+            span: 16,
+          }}
+        >
+          <Checkbox>Remember me</Checkbox>
+        </Form.Item>
+
+        <Form.Item
+          wrapperCol={{
+            offset: 8,
+            span: 16,
+          }}
+        ></Form.Item>
+        <Form.Item
+          name="remember"
+          valuePropName="checked"
+          wrapperCol={{
+            offset: 8,
+            span: 16,
+          }}
+        ></Form.Item>
+
+        <Form.Item {...tailLayout}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            style={{ backgroundColor: "#1677ff", marginRight: "8px" }}
+          >
+            로그인
+          </Button>
+
+          <Button
+            htmlType="button"
+            style={{}}
+            onClick={() => navigate("/signup")}
+          >
+            회원가입
+          </Button>
+        </Form.Item>
+      </Form>
       {/* 
        1.emotion을 활용하여 tag의 용도를 구분한다.
        2.css도 함께 적용한다. 
        */}
-      <LoginDiv>
-        <form className="shadow bg-white rounded">
-          <label htmlFor="">이메일</label>
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            placeholder="이메일을 입력하세요"
-            title="이메일을 입력하라니까?"
-          ></input>
-          <label htmlFor="">비밀번호</label>
-          <input
-            type="password"
-            required
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            minLength={8}
-            maxLength={16}
-            placeholder="비밀번호를 입력하세요"
-            title="비밀번호를 모르면 비밀번호 찾기를 해라"
-          ></input>
-          <div className="flex justify-center gap-5 w-full">
-            <button
-              className="border rounded px-3 py-2 shadow"
-              onClick={e => handleLogin(e)}
-            >
-              로그인
-            </button>
-            <button
-              className="border rounded px-3 py-2 shadow"
-              onClick={e => {
-                e.preventDefault();
-                navigate("/signup");
-              }}
-            >
-              회원가입
-            </button>
-            <button
-              className="border rounded px-3 py-2 shadow"
-              onClick={e => {
-                e.preventDefault();
-                console.log("비밀번호 찾기");
-              }}
-            >
-              비밀번호 찾기
-            </button>
-          </div>
-        </form>
-      </LoginDiv>
     </div>
   );
 };

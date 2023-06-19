@@ -1,6 +1,18 @@
 import React, { useState } from "react";
 import SignUpDiv from "../style/UserCss";
 import { useNavigate } from "react-router-dom";
+import {
+  AutoComplete,
+  Button,
+  Cascader,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Row,
+  Select,
+} from "antd";
 // firebase 연동
 import firebase from "../firebase";
 
@@ -41,6 +53,77 @@ const Signup = () => {
   return (
     <div className="p-6 mt-5 shadow rounded-md bg-white flex flex-col">
       <h2>SignUp</h2>
+
+      {/* <Form>
+        <Form.Item
+          name="nickname"
+          label="Nickname"
+          tooltip="What do you want others to call you?"
+          rules={[
+            {
+              required: true,
+              message: "Please input your nickname!",
+              whitespace: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name="email"
+          label="E-mail"
+          rules={[
+            {
+              type: "email",
+              message: "The input is not valid E-mail!",
+            },
+            {
+              required: true,
+              message: "Please input your E-mail!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          label="Password"
+          rules={[
+            {
+              required: true,
+              message: "Please input your password!",
+            },
+          ]}
+          hasFeedback
+        >
+          <Input.Password />
+        </Form.Item>
+        <Form.Item
+          name="confirm"
+          label="Confirm Password"
+          dependencies={["password"]}
+          hasFeedback
+          rules={[
+            {
+              required: true,
+              message: "Please confirm your password!",
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("password") === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error("The new password that you entered do not match!"),
+                );
+              },
+            }),
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
+      </Form> */}
       {/* 
        1.emotion을 활용하여 tag의 용도를 구분한다.
        2.css도 함께 적용한다. 
