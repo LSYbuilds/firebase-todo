@@ -8,6 +8,10 @@ import Signup from "./pages/Signup";
 import Todo from "./pages/Todo";
 import NotFound from "./pages/NotFound";
 import MyPage from "./pages/MyPage";
+import TodoChart from "./pages/TodoChart";
+import Schedule from "./pages/Schedule";
+import Upload from "./pages/Upload";
+
 import { useState } from "react";
 function App() {
   // console.log("App 랜더링")
@@ -15,6 +19,8 @@ function App() {
   const [fbName, setFBName] = useState("");
   const [fbEmail, setFBEmail] = useState("");
   const [fbUid, setFBUid] = useState("");
+  const [hlname, setHlname] = useState("");
+  const [hlgroup, setHlgroup] = useState("");
 
   return (
     <div className="w-screen h-screen bg-stone-100 overflow-x-hidden">
@@ -58,11 +64,14 @@ function App() {
                 fbEmail={fbEmail}
                 fbUid={fbUid}
                 setFBName={setFBName}
-                setFBEmail={setFBEmail}
+                setFBEmail={setFBEmail}y
                 setFBUid={setFBUid}
               />
             }
           />
+          <Route path="/chart" element={<TodoChart />}></Route>
+          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/upload" element={<Upload />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

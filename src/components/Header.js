@@ -21,11 +21,11 @@ const Header = ({
     navigate("/");
   };
   return (
-    <header className="p-7 bg-orange-300 relative">
+    <header className="p-9 bg-orange-300 relative">
       <div className="flex items-center justify-between">
-        <NavLink to="/" className="text-black hover:text-orange-400">
+        <Link to="/" className="text-black hover:text-orange-400">
           로고
-        </NavLink>
+        </Link>
         <ul className="flex items-center justify-center gap-4">
           <li>
             <NavLink
@@ -61,6 +61,42 @@ const Header = ({
               }}
             >
               TODO
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/chart"
+              className={({ isActive }) => {
+                return isActive
+                  ? "text-orange-600 font-bold"
+                  : "text-black font-bold";
+              }}
+            >
+              CHART
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/schedule"
+              className={({ isActive }) => {
+                return isActive
+                  ? "text-amber-100 font-bold"
+                  : "text-black font-bold";
+              }}
+            >
+              SCHEDULE
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/upload"
+              className={({ isActive }) => {
+                return isActive
+                  ? "text-orange-100 font-bold"
+                  : "text-black font-bold";
+              }}
+            >
+              UPLOAD
             </NavLink>
           </li>
         </ul>

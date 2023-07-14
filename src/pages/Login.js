@@ -6,9 +6,6 @@ import { Button, Checkbox, Form, Input, Modal } from "antd";
 const Login = ({ setFBEmail, setFBName, setFBUid }) => {
   // Link가 아닌 ,NavLink , useNavigate;
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   // 로그인
 
   const onFinish = async values => {

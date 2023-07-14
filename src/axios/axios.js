@@ -7,8 +7,10 @@ const axiosInstance = axios.create({
     Accept: "*/*",
   },
 });
+
+// HALF get 기능
 // Todo Get 기능
-const getTodo = async 함수 => {
+const getTodo = async (함수, 함수2) => {
   try {
     const res = await axiosInstance.get("/todos");
     const result = res.data;
@@ -22,10 +24,12 @@ const getTodo = async 함수 => {
       return item;
     });
     함수(todosArr);
+    함수2(false);
     //
     // item.completed = JSON.parse(item.completed);
   } catch (error) {
     console.log(error);
+    함수2(false);
   }
 };
 // Todo Post 기능
@@ -51,9 +55,6 @@ const patchTitleTodo = async (_id, editTitle) => {
   } catch (error) {
     console.log(error);
   }
-  // .then(res => res.data)
-  // .then(result => console.log(result))
-  // .catch(error => console.log(error));
 };
 
 // completed
@@ -75,7 +76,7 @@ const deleteAllTodo = async () => {
     const res = await axiosInstance.get("/todos");
     const result = res.data;
     // 문제가 무엇인가? true false 가 문자열로 들어옴
-    todosArr.forEach(item => {
+    result.forEach(item => {
       deleteTodo(item.id);
     });
   } catch (error) {
