@@ -12,7 +12,6 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [pwConfirm, setPwConfirm] = useState("");
-
   // custom Hook 을 활용
   const { signUp } = useSignup();
 

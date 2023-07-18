@@ -1,24 +1,27 @@
 import React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import firebase from "../firebase";
+// import { useAuthContext } from "../hooks/useAuthContext";
+import { useLogout } from "../hooks/useLogout";
+import { useAuthContext } from "../hooks/useAuthContext";
+const Header = () => {
+  // AuthContext 로그아웃 실행 상태 변경
+  const { logout } = useLogout();
+  const { user } = useAuthContext();
+  console.log("==========================");
+  console.log(user);
 
-const Header = ({
-  fbName,
-  fbEmail,
-  fbUid,
-  setFBName,
-  setFBEmail,
-  setFBUid,
-}) => {
+  // const { dispatch } = useAuthContext();
   const navigate = useNavigate();
   // fg 로그아웃
   const handleLogout = () => {
-    firebase.auth().signOut();
-    console.log("로그아웃");
-    setFBName("");
-    setFBEmail("");
-    setFBUid("");
-    navigate("/");
+    logout();
+    // dispatch({ type: "logout" });
+    // firebase.auth().signOut();
+    // console.log("로그아웃");
+    // setFBName("");
+    // setFBEmail("");
+    // setFBUid("");
+    // navigate("/");
   };
   return (
     <header className="p-9 bg-orange-300 relative">
@@ -53,7 +56,7 @@ const Header = ({
           </li>
           <li>
             <NavLink
-              to={fbUid ? "/todo" : "/login"}
+              to={user ? "/todo" : "/login"}
               className={({ isActive }) => {
                 return isActive
                   ? "text-orange-600 font-bold"
@@ -101,10 +104,16 @@ const Header = ({
           </li>
         </ul>
         <div className="flex justify-center gap-5">
-          {fbUid ? (
+          {user ? (
             <div className="text-white flex flex-row gap-2 absolute right-0 top-7">
-              환영합니다{fbName} {fbEmail} {fbUid}
-              <button onClick={handleLogout}>로그아웃</button>
+              {user.displayName}
+              {user.email} {user.uid}
+              <button
+                onClick={handleLogout}
+                className="text-white hover:text-orange-600"
+              >
+                로그아웃
+              </button>
               <Link to="/mypage" className="text-block">
                 마이페이지
               </Link>

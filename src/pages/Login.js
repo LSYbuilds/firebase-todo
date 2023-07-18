@@ -1,42 +1,22 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import firebase from "../firebase";
+// import firebase from "../firebase";
 import { Button, Checkbox, Form, Input, Modal } from "antd";
+import { useLogin } from "../hooks/useLogin";
 
-const Login = ({ setFBEmail, setFBName, setFBUid }) => {
+const Login = () => {
+  const { login } = useLogin();
+
   // Link가 아닌 ,NavLink , useNavigate;
   const navigate = useNavigate();
   // 로그인
 
-  const onFinish = async values => {
-    // console.log("Success:", values);
+  const onFinish = values => {
+    console.log("Success:", values);
     try {
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(values.Email, values.password);
-      // 로그인 된 사용자 정보를 가지고 온다
-      const user = firebase.auth().currentUser;
-      console.log(user);
-      setFBName(user.displayName);
-      setFBEmail(user.email);
-      setFBUid(user.uid);
-      navigate("/");
-      // navigate("/");
+      login(values.email, values.password);
     } catch (error) {
-      console.log(error.code);
-
-      if (error.code === "auth/invalid-email") {
-        setModalMessage("올바른 이메일 형식이 아닙니다.");
-      } else if (error.code === "auth/wrong-password") {
-        setModalMessage("올바르지 않은 비밀번호입니다.");
-      } else if (error.code === "auth/user-not-found") {
-        setModalMessage("가입되지 않은 사용자 입니다.");
-      } else if (error.code === "auth/missing-email") {
-        setModalMessage("이메일이 맞지않습니다.");
-      } else {
-        setModalMessage("로그인이 실패하였습니다.");
-      }
-      showModal();
+      console.log(error);
     }
   };
 

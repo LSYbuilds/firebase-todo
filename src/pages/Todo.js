@@ -56,7 +56,7 @@ const Todo = ({ fbName, fbEmail, fbUid }) => {
   }, []);
   return (
     <div className="flex justify-center items-start mt-5 w-full">
-      {isLoading && <Loading />}
+      {/* {isLoading && <Loading />} */}
       <div className="w-4/5 p-6 bg-white rounded-[6px] shadow">
         <div className="flex justify-between mb-3">
           <h1 className=" text-center w-3/4 text-2xl text-pink-600 font-semibold">
