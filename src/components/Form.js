@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { postTodo } from "../axios/axios";
 
 const Form = ({ todoData, setTodoData, fbName, fbEmail }) => {
-  // console.log("Form 랜더링");
   // 새로운 할일 state 변수
   const [value, setValue] = useState("");
 

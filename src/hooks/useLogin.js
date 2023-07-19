@@ -7,11 +7,12 @@ import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router";
 
 export const useLogin = () => {
-  const navigate = useNavigate();
-  console.log("로긴한다");
-  const [error, setError] = useState(null);
-  const [isPending, setIsPending] = useState(false);
-  const { dispatch } = useAuthContext();
+    const [error, setError] = useState(null);
+    const [isPending, setIsPending] = useState(false);
+    const { dispatch } = useAuthContext();
+
+    const navigate = useNavigate();
+    
   const login = async (email, password) => {
     setError(null);
     setIsPending(true);

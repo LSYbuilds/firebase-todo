@@ -16,7 +16,6 @@ import { useActionData } from "react-router-dom";
 import { useState } from "react";
 import { useAuthContext } from "./hooks/useAuthContext";
 function App() {
-  // console.log("App 랜더링")
   // 추후에 redux/Recoilstate로 관리 필요
   const [fbName, setFBName] = useState("");
   const [fbEmail, setFBEmail] = useState("");
@@ -55,12 +54,6 @@ function App() {
             element={
               user ? (
                 <MyPage
-                  fbName={fbName}
-                  fbEmail={fbEmail}
-                  fbUid={fbUid}
-                  setFBName={setFBName}
-                  setFBEmail={setFBEmail}
-                  setFBUid={setFBUid}
                 />
               ) : (
                 <Navigate to="/login" />

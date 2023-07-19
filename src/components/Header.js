@@ -7,24 +7,14 @@ const Header = () => {
   // AuthContext 로그아웃 실행 상태 변경
   const { logout } = useLogout();
   const { user } = useAuthContext();
-  console.log("==========================");
-  console.log(user);
-
   // const { dispatch } = useAuthContext();
   const navigate = useNavigate();
   // fg 로그아웃
   const handleLogout = () => {
     logout();
-    // dispatch({ type: "logout" });
-    // firebase.auth().signOut();
-    // console.log("로그아웃");
-    // setFBName("");
-    // setFBEmail("");
-    // setFBUid("");
-    // navigate("/");
   };
   return (
-    <header className="p-9 bg-orange-300 relative">
+    <header className="p-10 bg-orange-300 relative">
       <div className="flex items-center justify-between">
         <Link to="/" className="text-black hover:text-orange-400">
           로고

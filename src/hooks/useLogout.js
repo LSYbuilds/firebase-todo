@@ -6,10 +6,10 @@ import { useNavigate } from "react-router";
 
 // FB 로그아웃
 export const useLogout = () => {
-  const navigate = useNavigate();
   const [error, setError] = useState();
   const [isPending, setIsPending] = useState(false);
   const { dispatch } = useAuthContext();
+  const navigate = useNavigate();
   const logout = async () => {
     setError(null);
     setIsPending(true);

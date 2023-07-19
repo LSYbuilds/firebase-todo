@@ -2,7 +2,6 @@ import React from "react";
 import Listitem from "./Listitem";
 
 const List = ({ todoData, setTodoData }) => {
-  console.log("List 랜더링");
   return (
     <div>
       {todoData.map(item => (

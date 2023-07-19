@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { patchTitleTodo, patchCompleteTodo, deleteTodo } from "../axios/axios";
 
 const Listitem = ({ item, todoData, setTodoData }) => {
-  // console.log("Listitem 랜더링", item);
   // 편집 상태 설정 state
   const [isEdit, setIsEdit] = useState(false);
   // 편집 상태 타이틀 설정 state

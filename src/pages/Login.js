@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import firebase from "../firebase";
 import { Button, Checkbox, Form, Input, Modal } from "antd";
 import { useLogin } from "../hooks/useLogin";
@@ -7,26 +7,62 @@ import { useLogin } from "../hooks/useLogin";
 const Login = () => {
   const { login } = useLogin();
 
-  // Link가 아닌 ,NavLink , useNavigate;
+  // Link, NavLink, useNaviage
   const navigate = useNavigate();
   // 로그인
+  const tailLayout = {
+    wrapperCol: { offset: 8, span: 16 },
+  };
 
   const onFinish = values => {
     console.log("Success:", values);
-    try {
-      login(values.email, values.password);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    login(values.email, values.password);
+    // try {
+    //   login(values.email, values.password);
+    // } catch (error) {
+    //   console.log(error);
+    // }
 
+    // Firebase 로그인
+    // try {
+    //   await firebase
+    //     .auth()
+    //     .signInWithEmailAndPassword(values.email, values.password);
+    //   // 로그인 된 사용자 정보를 가지고 옮
+    //   const user = firebase.auth().currentUser;
+    //   setFBName(user.displayName);
+    //   setFBEmail(user.email);
+    //   setFBUid(user.uid);
+    //   navigate("/");
+    // } catch (error) {
+    //   console.log(error.code);
+
+    //   if (error.code === "auth/invalid-email") {
+    //     setModalMessage("올바른 이메일 형식이 아닙니다.");
+    //   } else if (error.code === "auth/wrong-password") {
+    //     setModalMessage("올바르지 않은 비밀번호입니다.");
+    //   } else if (error.code === "auth/user-not-found") {
+    //     setModalMessage("가입되지 않은 사용자 입니다.");
+    //   } else if (error.code === "auth/missing-email") {
+    //     setModalMessage("이메일이 입력되지 않았습니다.");
+    //   } else {
+    //     setModalMessage("로그인이 실패하였습니다.");
+    //   }
+    //   showModal();
+    // }
+  };
   const onFinishFailed = errorInfo => {
-    console.log("Failed:", errorInfo);
+    // console.log("Failed:", errorInfo);
+    const arr = errorInfo.errorFields;
+    console.log(arr);
+    arr.forEach(item => {
+      console.log(item.errors);
+    });
   };
-
   // Modal 기능
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -37,14 +73,9 @@ const Login = () => {
     setIsModalOpen(false);
   };
 
-  const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
-  };
-
   return (
-    <div className="p-6 mt-5 shadow rounded-md bg-white flex flex-col">
+    <div className="p-6 mt-5 shadow rounded-md bg-white">
       <h2>Login</h2>
-      {/* ANT디자인? */}
 
       {/* AntD Modal */}
       <Modal
@@ -55,13 +86,14 @@ const Login = () => {
       >
         <p>{modalMessage}</p>
       </Modal>
+      {/*  AntD form */}
       <Form
         name="basic"
         labelCol={{
-          span: 8,
+          span: 3,
         }}
         wrapperCol={{
-          span: 18,
+          span: 16,
         }}
         style={{
           maxWidth: 1280,
@@ -73,17 +105,19 @@ const Login = () => {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
+        validateTrigger="onSubmit"
       >
         <Form.Item
           label="Email"
-          name="Email"
+          name="email"
           rules={[
             {
               type: "email",
               required: true,
-              message: "Email을 입력하세요",
+              message: "",
             },
           ]}
+          validateTrigger="onSubmit"
         >
           <Input />
         </Form.Item>
@@ -94,7 +128,7 @@ const Login = () => {
           rules={[
             {
               required: true,
-              message: "비밀번호를 입력하세요",
+              message: "비밀번호를 입력해주세요!",
               validator: async (_, password) => {
                 if (!password || password.length < 6) {
                   return Promise.reject(new Error("At least 6 passengers"));
@@ -117,21 +151,6 @@ const Login = () => {
           <Checkbox>Remember me</Checkbox>
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        ></Form.Item>
-        <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        ></Form.Item>
-
         <Form.Item {...tailLayout}>
           <Button
             type="primary"
@@ -150,10 +169,6 @@ const Login = () => {
           </Button>
         </Form.Item>
       </Form>
-      {/* 
-       1.emotion을 활용하여 tag의 용도를 구분한다.
-       2.css도 함께 적용한다. 
-       */}
     </div>
   );
 };

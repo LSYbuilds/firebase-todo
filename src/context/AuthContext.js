@@ -19,7 +19,6 @@ const AuthContext = createContext();
 
 const authReducer = (state, action) => {
   console.log("리듀서함수:", action);
-  // action은 반드시 형태가{type:"구분자"}
   switch (action.type) {
     // 즉 이러한 login이라는 case 값이 들어오게 되면은 아래쪽 retrun으로
     // 반환하게 되어 state에 전달한다. action.payload를 값으로 전달한다.
@@ -30,6 +29,12 @@ const authReducer = (state, action) => {
 
     case "isAuthReady":
       return { ...state, user: action.payload };
+    case "updateName":
+      return { ...state, user: action.payload };
+    case "updateEmail":
+      return { ...state, user: action.payload };
+    case "deleteUser":
+      return { ...state, user: null };
     default:
       // 그대로 돌려준다.
       return state;
@@ -46,17 +51,6 @@ const AuthContextProvider = ({ children }) => {
   // FB 인증 웹브라우저 새로 고침 처리
   useEffect(() => {
     onAuthStateChanged(appAuth, user => {
-      // 로그인이 되었는지 아닌지를 파악한다.
-      // AuthContext 를 User 정보를 입력한다.
-      // if (user) {
-      //   // User is signed in, see docs for a list of available properties
-      //   // https://firebase.google.com/docs/reference/js/auth.user
-      //   const uid = user.uid;
-      //   // ...
-      // } else {
-      //   // User is signed out
-      //   // ...
-      // }
       console.log("onAuthStateChanged", user);
       dispatch({ type: "isAuthReady", payload: user, isAuthReady: true });
     });

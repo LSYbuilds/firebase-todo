@@ -17,13 +17,14 @@ const SignUp = () => {
 
   const handleSignUp = async e => {
     e.preventDefault();
+    signUp(email, pw, nickName);
 
-    try {
-      // 로그인을 시도한다.
-      signUp(email, pw, nickName);
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   // 로그인을 시도한다.
+    //   signUp(email, pw, nickName);
+    // } catch (error) {
+    //   console.log(error);
+    // }
 
     // try {
     //   // firebase 에 회원가입 하기
