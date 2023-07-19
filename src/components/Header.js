@@ -1,8 +1,8 @@
 import React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 // import { useAuthContext } from "../hooks/useAuthContext";
-import { useLogout } from "../hooks/useLogout";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useLogout } from "../hooks/useFirebase";
+import { useAuthContext } from "../hooks/useFirebase";
 const Header = () => {
   // AuthContext 로그아웃 실행 상태 변경
   const { logout } = useLogout();

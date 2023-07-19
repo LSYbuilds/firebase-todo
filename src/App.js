@@ -12,9 +12,8 @@ import TodoChart from "./pages/TodoChart";
 import Schedule from "./pages/Schedule";
 import Upload from "./pages/Upload";
 import { useActionData } from "react-router-dom";
-
 import { useState } from "react";
-import { useAuthContext } from "./hooks/useAuthContext";
+import { useAuthContext } from "./hooks/useFirebase";
 function App() {
   // 추후에 redux/Recoilstate로 관리 필요
   const [fbName, setFBName] = useState("");
@@ -51,14 +50,7 @@ function App() {
           />
           <Route
             path="/mypage"
-            element={
-              user ? (
-                <MyPage
-                />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
+            element={user ? <MyPage /> : <Navigate to="/login" />}
           />
           <Route path="/chart" element={<TodoChart />}></Route>
           <Route path="/schedule" element={<Schedule />} />
