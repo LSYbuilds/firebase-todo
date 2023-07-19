@@ -14,13 +14,22 @@ import Upload from "./pages/Upload";
 import { useActionData } from "react-router-dom";
 import { useState } from "react";
 import { useAuthContext } from "./hooks/useFirebase";
+import { Modal } from "antd";
 function App() {
   // 추후에 redux/Recoilstate로 관리 필요
   const [fbName, setFBName] = useState("");
   const [fbEmail, setFBEmail] = useState("");
   const [fbUid, setFBUid] = useState("");
-  const { isAuthReady, user } = useAuthContext();
+  const { isAuthReady, user, errMessage, dispatch } = useAuthContext();
 
+  // 에러메세지 모달 관련
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const handleOk = () => {
+    dispatch({ type: "isError", payload: "" });
+  };
+  const handleCancel = () => {
+    dispatch({ type: "isError", payload: "" });
+  };
   return (
     <div className="w-screen h-screen bg-stone-100 overflow-x-hidden">
       <Header />
@@ -58,6 +67,17 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
+      {/* 모달창 */}
+      {errMessage && (
+        <Modal
+          title="Basic Modal"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          <div>{errMessage}</div>
+        </Modal>
+      )}
     </div>
     // <>
     //   {isAuthReady ? (
