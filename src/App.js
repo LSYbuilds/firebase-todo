@@ -12,7 +12,7 @@ import TodoChart from "./pages/TodoChart";
 import Schedule from "./pages/Schedule";
 import Upload from "./pages/Upload";
 import { useActionData } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "./hooks/useFirebase";
 import { Modal } from "antd";
 function App() {
@@ -24,9 +24,28 @@ function App() {
 
   // 에러메세지 모달 관련
   const [isModalOpen, setIsModalOpen] = useState(true);
+
+  // 에러메시지 모달 관련
+  const error = msg => {
+    Modal.error({
+      title: "This is a warning message",
+      content: msg,
+      onOk: handleOk,
+    });
+  };
+
+  useEffect(() => {
+    if (errMessage !== "") {
+      error(errMessage);
+    }
+  }, [errMessage]);
+
   const handleOk = () => {
     dispatch({ type: "isError", payload: "" });
   };
+  // const handleCancel = () => {
+  //   dispatch({ type: "isError", payload: "" });
+  // };
   const handleCancel = () => {
     dispatch({ type: "isError", payload: "" });
   };
@@ -67,17 +86,6 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-      {/* 모달창 */}
-      {errMessage && (
-        <Modal
-          title="Basic Modal"
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        >
-          <div>{errMessage}</div>
-        </Modal>
-      )}
     </div>
     // <>
     //   {isAuthReady ? (

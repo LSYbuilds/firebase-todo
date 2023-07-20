@@ -131,12 +131,10 @@ export const useSignup = () => {
       } else if (err.code == "auth/invalid-email") {
         errMessage = "현재 이메일은 유효하지않은 이메일형식입니다.";
       } else if (err.code == "auth/operation-not-allowed") {
-        errMessage = "Operation not allowed.";
+        errMessage = "권한이 없습니다.";
       } else if (err.code == "auth/weak-password") {
         errMessage = "비밀번호의 보안성이 취약합니다.";
       }
-      dispatch({ type: "isError", payload: errMessage });
-
       dispatch({ type: "isError", payload: errMessage });
     }
   };
