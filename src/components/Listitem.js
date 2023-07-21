@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { patchTitleTodo, patchCompleteTodo, deleteTodo } from "../axios/axios";
+import { useFireStore } from "../hooks/useFireStore";
+import { patchTitleTodo } from "../axios/axios";
 
-const Listitem = ({ item, todoData, setTodoData }) => {
+const Listitem = ({ item }) => {
+  const { deleteDocument, updateCompletedDocument, updateTitleDocument } =
+    useFireStore("todo");
   // 편집 상태 설정 state
   const [isEdit, setIsEdit] = useState(false);
   // 편집 상태 타이틀 설정 state
@@ -15,9 +18,10 @@ const Listitem = ({ item, todoData, setTodoData }) => {
   };
 
   const handleDeleteClick = _id => {
-    const newTodoData = todoData.filter(item => item.id !== _id);
-    setTodoData(newTodoData);
-    deleteTodo(_id);
+    deleteDocument(_id);
+    // const newTodoData = todoData.filter(item => item.id !== _id);
+    // setTodoData(newTodoData);
+    // deleteTodo(_id);
   };
 
   const handleEditClick = () => {
@@ -27,14 +31,15 @@ const Listitem = ({ item, todoData, setTodoData }) => {
     setIsEdit(false);
   };
   const handleSaveClick = _id => {
-    let newTodoData = todoData.map(item => {
-      if (item.id === _id) {
-        item.title = editTitle;
-        item.completed = false;
-      }
-      return item;
-    });
-    setTodoData(newTodoData);
+    updateTitleDocument(_id, editTitle);
+    // let newTodoData = todoData.map(item => {
+    //   if (item.id === _id) {
+    //     item.title = editTitle;
+    //     item.completed = false;
+    //   }
+    //   return item;
+    // });
+    // setTodoData(newTodoData);
 
     patchTitleTodo(_id, editTitle);
     item.completed = false;
@@ -46,15 +51,18 @@ const Listitem = ({ item, todoData, setTodoData }) => {
   };
 
   const handleCompleteChange = _id => {
-    let newTodoData = todoData.map(item => {
-      if (item.id === _id) {
-        // 전달한 값 보관
-        item.completed = !item.completed;
-      }
-      return item;
-    });
-    setTodoData(newTodoData);
-    patchCompleteTodo(_id, { ...item });
+    // FB의 fireStore에서 id를 참조 전달
+    // FB의 fireStore에서 completed를 반대로 ! (Not 연산자)
+    updateCompletedDocument(_id, !item.completed);
+    // let newTodoData = todoData.map(item => {
+    //   if (item.id === _id) {
+    //     // 전달한 값 보관
+    //     item.completed = !item.completed;
+    //   }
+    //   return item;
+    // });
+    // setTodoData(newTodoData);
+    // patchCompletedTodo(_id, { ...item });
   };
 
   if (isEdit) {

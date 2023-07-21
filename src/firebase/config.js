@@ -5,7 +5,7 @@ import { initializeApp } from "firebase/app";
 // 인증기능
 import { getAuth } from "firebase/auth";
 // 데이터베이스
-import { getFirestore } from "firebase/firestore";
+import { Timestamp, getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -23,6 +23,9 @@ const app = initializeApp(firebaseConfig);
 const appAuth = getAuth(app);
 // 데이터베이스
 const appFireStore = getFirestore(app);
+const timestamp = Timestamp;
+
+// 등록된 날자 정리하기위해서 Firebase 서버의 시간을 쓰는 형태로
 
 // 외부에서 활용 하도록 내보냄
-export { appAuth, appFireStore };
+export { appAuth, appFireStore, timestamp };

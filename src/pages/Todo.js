@@ -1,65 +1,49 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import List from "../components/List";
-import Form from "../components/Form";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { axiosInstance, deleteAllTodo } from "../axios/axios";
-import Loading from "../components/Loading";
+import { deleteAllTodo } from "../axios/axios";
+import Form from "../components/Form";
+import List from "../components/List";
+// import Loding from "../components/Loding";
+// 사용자의 uid가 필요하다
+// 이유는 회원가입을 여러명이 할 수 있는데,
+// todo를 등록해 주기 위해서 uid 필요
+import { useAuthContext } from "../hooks/useFirebase";
+//  컬렉션 임폴트
+import { useCollection } from "../hooks/useCollection";
 
 const Todo = ({ fbName, fbEmail, fbUid }) => {
+  // 사용자별 등록을 위해 user를 참조
+  const { user } = useAuthContext();
+  // 컬렉션 데이터 출력 state
+  const { documents, error } = useCollection("todo", ["uid", "==", user.uid]);
+  console.log("문서목록 ==============");
+  console.log(document);
+
   const navigator = useNavigate();
-  // 로딩처리
-  const [isLoading, setIsLoading] = useState("true");
+  // 로딩 처리
+  // const [isLoding, setIsLoding] = useState(true);
+
   // 백엔드반에 DB table 구성에 활용한다.
-  // FB , MongoDB 에서는 Collection 구성에 활용한다?!
+  // FB, MongoDB 에서는 Collection 구성에 활용한다.
   console.log(fbName, fbEmail);
   // JsonServer 데이터 state 변수
   const initTodoData = [];
-  const [todoData, setTodoData] = useState(initTodoData);
+  const [todoData, setTodoData] = useState([]);
 
   const handleRemoveClick = () => {
     setTodoData([]);
-    deleteAllTodo();
     // 로컬스토리지 초기화
     // localStorage.setItem("fbTodoData", JSON.stringify([]));
+    deleteAllTodo();
   };
 
-  // const RemoveTodo = async(_id) => {
-  //   try {
-  //     const res = await axiosInstance.
-  //   }
-  // }
-
-  const getTodo = async () => {
-    try {
-      const res = await axiosInstance.get("/todos");
-      const result = res.data;
-      // 문제가 무엇인가? true false 가 문자열로 들어옴
-      const todosArr = result.map(item => {
-        if (item.completed === "true") {
-          item.completed = true;
-        } else {
-          item.completed = false;
-        }
-        return item;
-      });
-      setTodoData(todosArr);
-      //
-      // item.completed = JSON.parse(item.completed);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  // uid가 없는 경우 로그인으로 바로 보내기
-  useEffect(() => {
-    getTodo(setTodoData, setIsLoading);
-  }, []);
   return (
     <div className="flex justify-center items-start mt-5 w-full">
-      {/* {isLoading && <Loading />} */}
+      {/* 로딩 */}
+      {/* {isLoding && <Loding />} */}
       <div className="w-4/5 p-6 bg-white rounded-[6px] shadow">
         <div className="flex justify-between mb-3">
-          <h1 className=" text-center w-3/4 text-2xl text-pink-600 font-semibold">
+          <h1 className="text-center w-3/4 text-2xl text-red-600 font-semibold">
             Firebase Todo-List
           </h1>
           <button
@@ -70,14 +54,11 @@ const Todo = ({ fbName, fbEmail, fbUid }) => {
           </button>
         </div>
         {/* 할일 목록 */}
-        <List todoData={todoData} setTodoData={setTodoData} />
+        {error && <strong>{error}</strong>}
+        {documents && <List todoData={documents} />}
+        {/* <List todoData={todoData} setTodoData={setTodoData} /> */}
         {/* 할일 추가 */}
-        <Form
-          todoData={todoData}
-          setTodoData={setTodoData}
-          fbName={fbName}
-          fbEmail={fbEmail}
-        />
+        <Form todoData={todoData} setTodoData={setTodoData} uid={user.uid} />
       </div>
     </div>
   );

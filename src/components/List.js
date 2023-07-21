@@ -1,7 +1,7 @@
 import React from "react";
 import Listitem from "./Listitem";
 
-const List = ({ todoData, setTodoData }) => {
+const List = ({ todoData }) => {
   return (
     <div>
       {todoData.map(item => (
@@ -9,8 +9,8 @@ const List = ({ todoData, setTodoData }) => {
         <Listitem
           key={item.id}
           item={item}
-          todoData={todoData}
-          setTodoData={setTodoData}
+          // todoData={todoData}
+          // setTodoData={setTodoData}
         />
       ))}
     </div>
