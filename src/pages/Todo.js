@@ -7,17 +7,16 @@ import List from "../components/List";
 // 사용자의 uid가 필요하다
 // 이유는 회원가입을 여러명이 할 수 있는데,
 // todo를 등록해 주기 위해서 uid 필요
-import { useAuthContext } from "../hooks/useFirebase";
+// import { useAuthContext } from "../hooks/useFirebase";
 //  컬렉션 임폴트
 import { useCollection } from "../hooks/useCollection";
+import { useSelector } from "react-redux";
 
-const Todo = ({ fbName, fbEmail, fbUid }) => {
+const Todo = () => {
   // 사용자별 등록을 위해 user를 참조
-  const { user } = useAuthContext();
+  const { user } = useSelector(state => state);
   // 컬렉션 데이터 출력 state
   const { documents, error } = useCollection("todo", ["uid", "==", user.uid]);
-  console.log("문서목록 ==============");
-  console.log(document);
 
   const navigator = useNavigate();
   // 로딩 처리
@@ -25,9 +24,8 @@ const Todo = ({ fbName, fbEmail, fbUid }) => {
 
   // 백엔드반에 DB table 구성에 활용한다.
   // FB, MongoDB 에서는 Collection 구성에 활용한다.
-  console.log(fbName, fbEmail);
   // JsonServer 데이터 state 변수
-  const initTodoData = [];
+  // const initTodoData = [];
   const [todoData, setTodoData] = useState([]);
 
   const handleRemoveClick = () => {

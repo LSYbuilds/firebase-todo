@@ -14,7 +14,7 @@ const Login = () => {
   };
 
   const onFinish = values => {
-    console.log("Success:", values);
+    // console.log("Success:", values);
     login(values.email, values.password);
     // try {
     //   login(values.email, values.password);
@@ -53,7 +53,7 @@ const Login = () => {
   const onFinishFailed = errorInfo => {
     // console.log("Failed:", errorInfo);
     const arr = errorInfo.errorFields;
-    console.log(arr);
+    // console.log(arr);
     arr.forEach(item => {
       console.log(item.errors);
     });

@@ -11,17 +11,19 @@ import {
 } from "firebase/auth";
 import { appAuth } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 // AuthContex Hook
-export const useAuthContext = () => {
-  const context = useContext(AuthContext);
-  return context;
-};
+// export const useAuthContext = () => {
+//   const context = useContext(AuthContext);
+//   return context;
+// };
 // 사용자 로그인 Hook
 export const useLogin = () => {
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
-  const { dispatch } = useAuthContext();
+  // const { dispatch } = useAuthContext();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const login = async (email, password) => {
     setError(null);
@@ -59,7 +61,7 @@ export const useLogin = () => {
 export const useLogout = () => {
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
-  const { dispatch } = useAuthContext();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const logout = async () => {
@@ -76,10 +78,12 @@ export const useLogout = () => {
   };
   return { error, isPending, logout };
 };
+
 // 회원가입 Hook
 export const useSignup = () => {
   // authContext 데이터 전달
-  const { dispatch } = useAuthContext();
+  // const { dispatch } = useAuthContext();
+  const dispatch = useDispatch();
 
   // 사용자 상태에 따라 웹브라우저 라우터 이동
   const navigate = useNavigate();
@@ -144,7 +148,8 @@ export const useSignup = () => {
 };
 // 회원이메일 변경 Hook
 export const useUpdateEmail = () => {
-  const { dispatch } = useAuthContext();
+  // const { dispatch } = useAuthContext();
+  const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
 
@@ -165,7 +170,8 @@ export const useUpdateEmail = () => {
 };
 // 회원닉네임 변경 Hook
 export const useUpdateNickName = () => {
-  const { dispatch } = useAuthContext();
+  // const { dispatch } = useAuthContext();
+  const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
 
@@ -215,7 +221,8 @@ export const useUpdatePass = () => {
 // 회원탈퇴 Hook
 export const useUserDelete = () => {
   const navigate = useNavigate();
-  const { dispatch } = useAuthContext();
+  // const { dispatch } = useAuthContext();
+  const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const userDelete = async () => {

@@ -3,10 +3,11 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 // import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useFirebase";
 import { useAuthContext } from "../hooks/useFirebase";
+import { useSelector } from "react-redux";
 const Header = () => {
-  // AuthContext 로그아웃 실행 상태 변경
   const { logout } = useLogout();
-  const { user } = useAuthContext();
+  const { user } = useSelector(state => state);
+  // const { user } =useAuthContext();
   // const { dispatch } = useAuthContext();
   const navigate = useNavigate();
   // fg 로그아웃
